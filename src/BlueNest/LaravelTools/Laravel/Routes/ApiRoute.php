@@ -10,7 +10,7 @@ namespace BlueNest\LaravelTools\Laravel\Routes;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\BlueNest\API\BResponses;
+use BlueNest\LaravelTools\API\BResponses;
 
 class ApiRoute
 {

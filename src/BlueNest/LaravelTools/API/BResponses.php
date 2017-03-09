@@ -7,8 +7,8 @@
 
 namespace BlueNest\LaravelTools\API;
 
-use App\BlueNest\Laravel\Databases\DatabaseHelper;
-use App\BlueNest\Environment\EnvironmentHelper;
+use BlueNest\LaravelTools\Laravel\Databases\DatabaseHelper;
+use BlueNest\LaravelTools\Environment\EnvironmentHelper;
 
 class BResponses {
     public static function respond($val) {
