@@ -9,7 +9,7 @@ namespace BlueNest\LaravelTools\Environment;
 
 class EnvironmentHelper {
 
-    function getEnvironmentDetails() {
+    static function getEnvironmentDetails() {
         $isTesting = (config('app.env', 'production') == 'testing');
         $isProduction = (config('app.env', 'production') == 'testing');
         $isDebugOn = config('app.debug', false);
