@@ -1,0 +1,16 @@
+{
+    "name": "bluenest/laravel-tools",
+    "description": "A package with tools for Laravel development.",
+    "authors": [
+        {
+            "name": "Bryan",
+            "email": "bryan@bluenestdigital.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "BlueNest\\LaravelTools\\": "src/BlueNest/LaravelTools"
+        }
+    }
+}
