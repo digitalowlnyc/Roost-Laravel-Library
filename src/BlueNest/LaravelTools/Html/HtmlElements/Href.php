@@ -26,4 +26,8 @@ class Href implements HtmlElementInterface
         $html = '<a href="' . $this->url . '">' . $this->text . '</a>';
         return $html;
     }
+
+    function __toString() {
+        return $this->toHtml();
+    }
 }
