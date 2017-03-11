@@ -11,22 +11,22 @@ namespace BlueNest\LaravelTools\DataTypes;
 class Result
 {
     private $status = 0;
+    private $errorMessages = [];
 
     function __construct($status) {
         $this->status = $status;
     }
 
-    static function returnOk() {
-        return new Result(1);
+    function succeeded() {
+        return $this->status >= 1;
     }
 
-    static function returnNotOk() {
-        return new Result(0);
+    function getErrors() {
+        return $this->errorMessages;
     }
 
-    function isOk() {
-        if($this->status >= 1) {
-            return true;
-        }
+    function withError($errorMsg) {
+        $this->errorMessages[] = $errorMsg;
+        return $this;
     }
 }
