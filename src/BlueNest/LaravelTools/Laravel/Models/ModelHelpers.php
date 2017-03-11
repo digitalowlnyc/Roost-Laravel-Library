@@ -42,9 +42,11 @@ class ModelHelpers {
         $fillable = $model->getFillable();
 
         foreach($attributes as $attr=>$val) {
+            /*
             if(!in_array($attr, $fillable)) {
                 throw new \Exception('Error when creating now ' . $modelClass . ' model - Field is not fillable: ' . $attr);
             }
+            */
             $model->{$attr} = $val;
         }
 
