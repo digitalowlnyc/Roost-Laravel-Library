@@ -13,7 +13,7 @@ class ConfigHelper
         return self::getValue($key, 'array', $default);
     }
 
-    static function getString($key, $default) {
+    static function getString($key, $default = false) {
         return self::getValue($key, 'string', $default);
     }
 

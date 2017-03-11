@@ -15,16 +15,19 @@ class EmailConfigNotifiable {
 
     public $email;
 
-    public function __construct($configKey) {
+    public function __construct($configKey, $configFile = 'mail') {
+        $configKey = $configFile . '.notification-groups.' . $configKey;
+
         if(!Config::has($configKey)) {
             throw new \Exception('Config does not contain key: ' . $configKey);
         }
 
-        if(!Config::has('all')) {
-            throw new \Exception('Config does not contain "all" key');
-        }
+        $emails = config($configKey);
 
-        $emails = array_merge(config($configKey), config('mail.notification-groups.all'));
+        $allConfigKey = $configFile . '.notification-groups.' . 'all';
+        if(Config::has($allConfigKey)) {
+            $emails = array_merge($emails, config($allConfigKey));
+        }
 
         $this->email = $emails;
     }

@@ -8,8 +8,26 @@
 namespace BlueNest\LaravelTools\Laravel\Models;
 
 class ModelHelpers {
+
     /**
-     * Creates a model with some added extras:
+     * Same as newModel() except the model is also saved
+     * @param $modelClass
+     * @param $attributes
+     * @return mixed
+     * @throws \Exception
+     */
+
+    static function createModel($modelClass, $attributes) {
+        $model = self::newModel($modelClass, $attributes);
+        if(!$model->save()) {
+            throw new \Exception('Problem saving new model of type: ' . $modelClass);
+        }
+
+        return $model;
+    }
+
+    /**
+     * Creates (and saves) a model with some added extras:
      * - Check if attributes are actually fillable
      * - Check if save() returns true and throw if not
      * @param $modelClass
@@ -18,7 +36,7 @@ class ModelHelpers {
      * @throws
      * @throws \Exception
      */
-    static function createModel($modelClass, $attributes) {
+    static function newModel($modelClass, $attributes) {
         $model = new $modelClass;
 
         $fillable = $model->getFillable();
@@ -30,12 +48,9 @@ class ModelHelpers {
             $model->{$attr} = $val;
         }
 
-        if(!$model->save()) {
-            throw new \Exception('Problem saving new model of type: ' . $modelClass);
-        }
-
         return $model;
     }
+
 
     public static function safeAttributes($model)
     {

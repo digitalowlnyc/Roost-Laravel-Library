@@ -9,6 +9,7 @@ namespace BlueNest\LaravelTools\API;
 
 use BlueNest\LaravelTools\Laravel\Databases\DatabaseHelper;
 use BlueNest\LaravelTools\Environment\EnvironmentHelper;
+use Illuminate\Support\Facades\Log;
 
 class BResponses {
     public static function respond($val) {
@@ -43,6 +44,7 @@ class BResponses {
      * @return mixed|string|void
      */
     public static function exception($e) {
+        Log::info($e->getTraceAsString());
         return BResponses::respond([
             'exception' => $e->getMessage(),
             'location' => $e->getFile() . ', Line #' . $e->getLine()
