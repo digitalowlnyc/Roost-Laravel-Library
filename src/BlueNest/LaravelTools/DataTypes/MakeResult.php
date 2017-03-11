@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Creator: Bryan Mayor
  * Company: Blue Nest Digital, LLC
@@ -8,25 +7,12 @@
 
 namespace BlueNest\LaravelTools\DataTypes;
 
-class Result
-{
-    private $status = 0;
-    private $errorMessages = [];
-
-    function __construct($status) {
-        $this->status = $status;
+class MakeResult {
+    static function success() {
+        return new Result(1);
     }
 
-    function succeeded() {
-        return $this->status >= 1;
-    }
-
-    function getErrors() {
-        return $this->errorMessages;
-    }
-
-    function withError($errorMsg) {
-        $this->errorMessages[] = $errorMsg;
-        return $this;
+    static function failure() {
+        return new Result(0);
     }
 }
