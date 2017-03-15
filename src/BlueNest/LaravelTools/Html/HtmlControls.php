@@ -88,6 +88,8 @@ class HtmlControls
             $html = "<div $common>{$value}</div>";
         } else if(in_array($type, ['text', 'button'])) {
             $html = "<input $common type='$type' value='{$value}'>";
+        } else if($type ==='textarea') {
+            $html = "<textarea $common>{$value}</textarea>";
         } elseif($type == 'slider') {
             $outputControlId = $field . '_output';
             $html = "<input $common type='range' min='{$inputs['range'][0]}' max='{$inputs['range'][1]}' oninput='{$outputControlId}.value = this.value'>";
@@ -124,7 +126,7 @@ class HtmlControls
             $html .= "<option value='0'>$falseDisplayValue</option>";
             $html .= "</select>";
         } else {
-            throw new \Exception('Unhandled control type: ' . $type);
+            throw new \Exception('Unhandled control type: ' . json_encode($type));
         }
 
         return $html;

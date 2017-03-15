@@ -27,6 +27,20 @@ class FormHelper
         return $values;
     }
 
+    static function parseActionSingleInput($actionLabel, $requestParams) {
+        $actionsMap = self::parseActionInput($requestParams);
+        if(!isset($actionsMap[$actionLabel]) || empty($actionsMap[$actionLabel])) {
+            return false;
+        }
+        $actions = $actionsMap[$actionLabel];
+        reset($actions);
+        $first_key = key($actions);
+        return [
+            'id' => $first_key,
+            'value' => $actions[$first_key]
+        ];
+    }
+
     static function parseActionInput($requestParams) {
         $re = '/do-action-input-([a-zA-Z_]+)-item-([A-Za-z0-9]+)/';
         $actionsMap = [];
