@@ -8,12 +8,18 @@
 
 namespace BlueNest\LaravelTools\Laravel\Forms;
 
+use BlueNest\LaravelTools\Laravel\Logging\UserLog;
 use Illuminate\Http\Request;
 use BlueNest\LaravelTools\Html\HtmlHelpers;
 
 class FormHelper
 {
+    private static $loggingOn = false;
+
     static function inputs(Request $request) {
+        if(self::$loggingOn) {
+            UserLog::info('Form inputs are: ' . json_encode($request->all()));
+        }
         $values = $request->all();
         $values = array_map(function($item) {
             if(strtolower($item) === 'true') {
@@ -65,5 +71,9 @@ class FormHelper
 
         $html = "<input type='{$inputType}' name='{$inputIdAndName}' id='{$inputIdAndName}' value='{$inputValue}'>";
         return $html;
+    }
+
+    static function setLogging($val) {
+        self::$loggingOn = $val;
     }
 }
