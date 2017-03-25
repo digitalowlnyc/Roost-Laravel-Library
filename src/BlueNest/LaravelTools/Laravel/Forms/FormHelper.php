@@ -16,9 +16,27 @@ class FormHelper
 {
     private static $loggingOn = false;
 
+    static function inputsForLogging(Request $request, $asJson = true) {
+        $inputsArray = $request->all();
+
+        $filteredKeys = ['password', 'password_confirmation'];
+
+        array_walk($inputsArray, function(&$item, $key) use($filteredKeys) {
+            if(in_array(strtolower($key), $filteredKeys)) {
+                $item = '[hidden]';
+            }
+        });
+
+        if($asJson) {
+            return json_encode($inputsArray);
+        } else {
+            return $inputsArray;
+        }
+    }
+
     static function inputs(Request $request) {
         if(self::$loggingOn) {
-            UserLog::info('Form inputs are: ' . json_encode($request->all()));
+            UserLog::info('Form inputs are: ' . self::inputsForLogging($request));
         }
         $values = $request->all();
         $values = array_map(function($item) {

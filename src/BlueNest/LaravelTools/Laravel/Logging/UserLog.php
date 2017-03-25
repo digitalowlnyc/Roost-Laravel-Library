@@ -8,6 +8,7 @@
 
 namespace BlueNest\LaravelTools\Laravel\Logging;
 
+use BlueNest\LaravelTools\Helpers\ExceptionHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -16,12 +17,28 @@ class UserLog
     private static function addUserInfo($str)
     {
         $user = Auth::user();
+
+        $requestId = isset($GLOBALS['unique-request-id']) ? $GLOBALS['unique-request-id'] : strval(time());
+
         if($user !== null) {
-            $str .= '| user context=' . json_encode(['user-id' => $user->id]);
+            $userInfo = json_encode(['user-id' => $user->id]);
         } else {
             $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'n/a';
-            $str .= '| user context=' . json_encode(['ip' => $ip]);
+            $userInfo = json_encode(['ip' => $ip]);
         }
+
+        $str .= ' | user-context=' . $userInfo;
+        $str = '[request-id=' . $requestId . '] ' . $str;
+
+        try {
+            $logAppendBacktrace = ExceptionHelper::getCallerBacktraceLogInfo(__FILE__);
+            if($logAppendBacktrace !== null) {
+                $str = $logAppendBacktrace . ': ' . $str;
+            }
+        } catch(\Exception $e) {
+            error_log('Warning: Exception determining backtrace in addUserInfo()');
+        }
+
         return $str;
     }
 
