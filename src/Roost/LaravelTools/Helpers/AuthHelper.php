@@ -2,8 +2,6 @@
 
 namespace Roost\LaravelTools\Helpers;
 
-use App\Models\Account;
-use App\Models\Donor;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Arr;
@@ -44,15 +42,6 @@ class AuthHelper
 	}
 
 	public static function login(Authenticatable $user, bool $remember, string $guard = null) {
-
-		if(!isset($user->user_type)) {
-			if($user instanceof Donor) {
-				$user->user_type = "donor";
-			} else if($user instanceof Account) {
-				$user->user_type = "account";
-			}
-		}
-
 		static::singleLogin($guard);
 		Auth::shouldUse($guard);
 		Auth::login($user, $remember);

@@ -1,5 +1,7 @@
 <?php
 
+namespace Roost\LaravelTools\Helpers;
+
 use Illuminate\Support\Facades\App;
 
 class AppHelper
