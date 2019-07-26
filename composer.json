@@ -1,16 +1,32 @@
 {
-    "name": "bluenest/laravel-tools",
-    "description": "A package with tools for Laravel development.",
+    "name": "roost/laravel-tools",
+    "description": "A Laravel helper library.",
     "authors": [
         {
-            "name": "Bryan",
-            "email": "bryan@bluenestdigital.com"
+            "name": "Blue Nest",
+            "email": "packages@bnest.co"
         }
     ],
-    "require": {},
+    "require": {
+        "roost/php-logging": "dev-master",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "laravel/framework": "*",
+        "symfony/var-dumper": "*"
+    },
     "autoload": {
         "psr-4": {
-            "BlueNest\\LaravelTools\\": "src/BlueNest/LaravelTools"
+            "Roost\\LaravelTools\\": "src/Roost/LaravelTools"
+        },
+        "files": [
+            "src/functions.php"
+        ]
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/digitalowlnyc/roost-logging-php"
         }
-    }
+    ]
 }
