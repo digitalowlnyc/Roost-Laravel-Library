@@ -41,7 +41,7 @@ class ApplicationCheckHeartbeatsCommand extends Command
      */
     public function handle()
     {
-    	$stalenessCutoffInMinutes = $this->argument("staleness");
+    	$stalenessCutoffInMinutes = $this->option("staleness");
 
     	if(!is_numeric($stalenessCutoffInMinutes)) {
     		$this->error("Staleness must be a number of minutes");

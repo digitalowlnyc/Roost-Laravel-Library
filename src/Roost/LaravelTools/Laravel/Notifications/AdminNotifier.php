@@ -9,7 +9,7 @@
 namespace Roost\LaravelTools\Laravel\Notifications;
 
 
-use App\Notifications\AdminAlert;
+use Roost\LaravelTools\Laravel\Notifications\AdminAlert;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Log;
 

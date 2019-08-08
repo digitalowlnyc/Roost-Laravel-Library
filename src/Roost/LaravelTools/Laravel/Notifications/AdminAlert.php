@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Notifications;
+namespace Roost\LaravelTools\Laravel\Notifications;
 
 use Roost\LaravelTools\Helpers\AppHelper;
 use Roost\LaravelTools\Helpers\EnvHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Roost\LaravelTools\Laravel\Notifications\Channels\FileChannel;
 use Roost\LaravelTools\Laravel\Notifications\Channels\MacNotificationsChannel;
@@ -14,6 +13,7 @@ use Roost\LaravelTools\Laravel\Notifications\Channels\MacNotificationsChannel;
 class AdminAlert extends Notification
 {
     use Queueable;
+
 	private $subject;
 	private $message;
 
