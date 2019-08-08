@@ -9,4 +9,7 @@ class AdminDatabaseNotification extends AppBaseModel {
 	use ModelUpdateCountTrait;
 
 	public $table = "admin_notifications";
+
+		protected $guarded = ["id"];
+
 }
