@@ -80,6 +80,7 @@ class DeploymentCheckHeartbeatsCommand extends Command
         if(!$foundValidHeartbeat) {
         	$this->info("Sending an admin notification");
         	$notifcation = Notification::with()
+				->topic("QUEUE")
 				->level("CRITICAL")
 				->subject("Heartbeat missed");
 
@@ -94,6 +95,7 @@ class DeploymentCheckHeartbeatsCommand extends Command
 		} else {
         	if($notifyIfSuccessful) {
         		AdminNotifier::notify(Notification::with()
+					->topic("QUEUE")
 					->channels(["database_admin_notifications"])
 					->level("INFO")
 					->subject("Queue heartbeat ok")

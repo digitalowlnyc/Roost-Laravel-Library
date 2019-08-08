@@ -13,7 +13,7 @@ class Notification {
 	public $subject = null;
 	public $level = "CRITICAL";
 	public $channels = [];
-	private $topic = "";
+	public $topic = "";
 
 	/**
 	 * @param null $body
