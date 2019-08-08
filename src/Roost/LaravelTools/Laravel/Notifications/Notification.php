@@ -12,6 +12,7 @@ class Notification {
 	public $body = null;
 	public $subject = null;
 	public $level = "CRITICAL";
+	public $channels = [];
 
 	/**
 	 * @param null $body
@@ -19,7 +20,7 @@ class Notification {
 	 * @param null $level
 	 * @return Notification
 	 */
-	static function with($body = null, $subject = null, $level = null) {
+	static function with($subject = null, $body = null, $level = null) {
 		$me = new self;
 
 		if($level !== null) {
@@ -59,6 +60,11 @@ class Notification {
 	 */
 	function subject($subject) {
 		$this->subject = $subject;
+		return $this;
+	}
+
+	function channels($channels) {
+		$this->channels = $channels;
 		return $this;
 	}
 }

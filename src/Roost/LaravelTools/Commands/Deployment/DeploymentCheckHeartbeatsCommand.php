@@ -16,7 +16,7 @@ class DeploymentCheckHeartbeatsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'bluenest:deployment:check-heartbeats {--staleness=10}';
+    protected $signature = 'bluenest:deployment:check-heartbeats {--staleness=10} {--notification-even-on-success=1}';
 
     /**
      * The console command description.
@@ -43,6 +43,7 @@ class DeploymentCheckHeartbeatsCommand extends Command
     public function handle()
     {
     	$stalenessCutoffInMinutes = $this->option("staleness");
+    	$notifyIfSuccessful = $this->option("notification-even-on-success") ? true : false;
 
     	if(!is_numeric($stalenessCutoffInMinutes)) {
     		$this->error("Staleness must be a number of minutes");
@@ -90,6 +91,14 @@ class DeploymentCheckHeartbeatsCommand extends Command
 
         	AdminNotifier::notify($notifcation);
         	$this->info("Sent an admin notification");
+		} else {
+        	if($notifyIfSuccessful) {
+        		AdminNotifier::notify(Notification::with()
+					->channels(["database_admin_notifications"])
+					->level("INFO")
+					->subject("Queue heartbeat ok")
+					->body("Heartbeat detected successfully"));
+			}
 		}
     }
 

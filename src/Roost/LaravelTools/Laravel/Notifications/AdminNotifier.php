@@ -21,11 +21,12 @@ class AdminNotifier
 		static::notifyRaw(
 			$notification->subject,
 			$notification->body,
-			$notification->level
+			$notification->level,
+			$notification->channels
 		);
 	}
 
-	public static function notifyRaw($subject, $body = null, $level = "CRITICAL") {
+	public static function notifyRaw($subject, $body = null, $level = "CRITICAL", $channels = []) {
 		$notificationsConfig = config("admin_notifications");
 
 		if($notificationsConfig === null) {
@@ -40,10 +41,16 @@ class AdminNotifier
 		}
 
 		$config = $notificationsConfig["default"];
+		$configuredChannels = $config["channels"];
+
+		if(!empty($channels)) {
+			$configuredChannels = $channels;
+		}
+
 		$sentTo = [];
 
 		$databaseNotification = null;
-		if(in_array("database_admin_notifications", $config["channels"])) {
+		if(in_array("database_admin_notifications", $configuredChannels)) {
 			try {
 				$databaseNotification = AdminDatabaseNotification::create([
 					"subject" => $subject,
@@ -58,17 +65,17 @@ class AdminNotifier
 
 		$notification = new AnonymousNotifiable();
 
-		if(in_array("file", $config["channels"])) {
+		if(in_array("file", $configuredChannels)) {
 			$notification = $notification->route('file', null);
 			$sentTo[] = "file";
 		}
 
-		if(in_array("log", $config["channels"])) {
+		if(in_array("log", $configuredChannels)) {
 			Log::log($level, "[ADMIN ALERT] [" . $subject . "] " . substr($body, 0, 100));
 			$sentTo[] = "log";
 		}
 
-		if(in_array("email", $config["channels"])) {
+		if(in_array("email", $configuredChannels)) {
 			if(isset($config["to"]["emails"])) {
 				$emails = $config["to"]["emails"];
 			} else {
@@ -79,7 +86,7 @@ class AdminNotifier
 			$notification->route("email", $emails);
 		}
 
-		if(in_array("database", $config["channels"])) {
+		if(in_array("database", $configuredChannels)) {
 			$notification->route("database", null);
 			$sentTo[] = "database";
 		}
