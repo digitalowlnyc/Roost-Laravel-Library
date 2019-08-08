@@ -13,6 +13,12 @@ class Notification {
 	public $subject = null;
 	public $level = "CRITICAL";
 
+	/**
+	 * @param null $body
+	 * @param null $subject
+	 * @param null $level
+	 * @return Notification
+	 */
 	static function with($body = null, $subject = null, $level = null) {
 		$me = new self;
 
@@ -29,16 +35,28 @@ class Notification {
 		return $me;
 	}
 
+	/**
+	 * @param $level
+	 * @return Notification
+	 */
 	function level($level) {
 		$this->level = $level;
 		return $this;
 	}
 
+	/**
+	 * @param $body
+	 * @return Notification
+	 */
 	function body($body) {
 		$this->body = $body;
 		return $this;
 	}
 
+	/**
+	 * @param $subject
+	 * @return Notification
+	 */
 	function subject($subject) {
 		$this->subject = $subject;
 		return $this;

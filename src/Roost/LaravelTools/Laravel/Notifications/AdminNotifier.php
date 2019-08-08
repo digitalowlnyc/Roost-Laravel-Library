@@ -17,15 +17,15 @@ class AdminNotifier
 {
 	const FALLBACK_EMAIL = "admin@localhost";
 
-	public function notify(Notification $notification) {
-		$this->notifyRaw(
+	public static function notify(Notification $notification) {
+		static::notifyRaw(
 			$notification->subject,
 			$notification->body,
 			$notification->level
 		);
 	}
 
-	public function notifyRaw($subject, $body = null, $level = "CRITICAL") {
+	public static function notifyRaw($subject, $body = null, $level = "CRITICAL") {
 		$notificationsConfig = config("admin_notifications");
 
 		if($notificationsConfig === null) {
