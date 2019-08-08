@@ -89,9 +89,18 @@ if(!class_exists("BND")) {
 if (!function_exists('ddd')) {
     function ddd(...$moreVars)
     {
+    	$varDumperClassExists = class_exists("VarDumper");
+
     	echo "ddd() called:" . PHP_EOL;
+    	if(!$varDumperClassExists) {
+    		echo " (install VarDumper for formatted output)" . PHP_EOL;
+		}
         foreach ($moreVars as $v) {
-            VarDumper::dump($v);
+        	if($varDumperClassExists) {
+				VarDumper::dump($v);
+			} else {
+        		var_dump($v);
+			}
         }
 
         exit(1);
