@@ -8,7 +8,7 @@ use Roost\LaravelTools\Laravel\Notifications\AdminNotifier;
 use Roost\LaravelTools\Laravel\Notifications\Notification;
 use Roost\LaravelTools\Laravel\Queue\QueueLog;
 
-class ApplicationCheckHeartbeatsCommand extends Command
+class DeploymentCheckHeartbeatsCommand extends Command
 {
     /**
      * The name and signature of the console command.

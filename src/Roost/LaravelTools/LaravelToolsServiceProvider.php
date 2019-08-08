@@ -3,8 +3,8 @@
 namespace Roost\LaravelTools;
 
 use Illuminate\Support\ServiceProvider;
-use Roost\LaravelTools\Commands\Deployment\ApplicationCheckHeartbeatsCommand;
-use Roost\LaravelTools\Commands\Deployment\ApplicationTriggerHeartbeatsCommand;
+use Roost\LaravelTools\Commands\Deployment\DeploymentCheckHeartbeatsCommand;
+use Roost\LaravelTools\Commands\Deployment\DeploymentTriggerHeartbeatsCommand;
 
 class LaravelToolsServiceProvider extends ServiceProvider {
 	public function boot() {
@@ -16,8 +16,8 @@ class LaravelToolsServiceProvider extends ServiceProvider {
 
 		if ($this->app->runningInConsole()) {
 			$this->commands([
-				ApplicationTriggerHeartbeatsCommand::class,
-				ApplicationCheckHeartbeatsCommand::class
+				DeploymentTriggerHeartbeatsCommand::class,
+				DeploymentCheckHeartbeatsCommand::class
 			]);
 		}
 	}

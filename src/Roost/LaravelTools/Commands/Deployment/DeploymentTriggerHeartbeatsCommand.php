@@ -5,7 +5,7 @@ namespace Roost\LaravelTools\Commands\Deployment;
 use Illuminate\Console\Command;
 use Roost\LaravelTools\Commands\Models\QueueHeartbeat;
 
-class ApplicationTriggerHeartbeatsCommand extends Command
+class DeploymentTriggerHeartbeatsCommand extends Command
 {
     /**
      * The name and signature of the console command.
