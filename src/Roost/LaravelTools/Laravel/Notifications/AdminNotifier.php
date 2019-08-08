@@ -22,11 +22,12 @@ class AdminNotifier
 			$notification->subject,
 			$notification->body,
 			$notification->level,
+			$notification->topic,
 			$notification->channels
 		);
 	}
 
-	public static function notifyRaw($subject, $body = null, $level = "CRITICAL", $channels = []) {
+	public static function notifyRaw($subject, $body = null, $level = "CRITICAL", $topic = "", $channels = []) {
 		$notificationsConfig = config("admin_notifications");
 
 		if($notificationsConfig === null) {
@@ -56,7 +57,8 @@ class AdminNotifier
 					"subject" => $subject,
 					"body" => $body,
 					"sent_to" => "",
-					"level" => $level
+					"level" => $level,
+					"topic" => $topic,
 				]);
 			} catch(\Exception $e) {
 				Log::error("Could not create database admin notification: " . $e->getMessage());

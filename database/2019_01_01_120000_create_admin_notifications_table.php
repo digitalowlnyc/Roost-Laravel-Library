@@ -17,6 +17,7 @@ class CreateAdminNotificationsTable extends Migration
         Schema::create('admin_notifications', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->string("topic", 100)->nullable();
             $table->string("subject", 1000)->nullable();
             $table->string("body", 5000)->nullable();
             $table->string("sent_to")->nullable();

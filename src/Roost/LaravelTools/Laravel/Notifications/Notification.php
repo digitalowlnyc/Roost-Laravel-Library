@@ -13,6 +13,7 @@ class Notification {
 	public $subject = null;
 	public $level = "CRITICAL";
 	public $channels = [];
+	private $topic = "";
 
 	/**
 	 * @param null $body
@@ -63,8 +64,17 @@ class Notification {
 		return $this;
 	}
 
+	/**
+	 * @param $channels
+	 * @return $this
+	 */
 	function channels($channels) {
 		$this->channels = $channels;
+		return $this;
+	}
+
+	function topic($topic) {
+		$this->topic = $topic;
 		return $this;
 	}
 }
