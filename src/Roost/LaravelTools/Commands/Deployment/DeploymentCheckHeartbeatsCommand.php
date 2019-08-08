@@ -2,6 +2,7 @@
 
 namespace Roost\LaravelTools\Commands\Deployment;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Roost\LaravelTools\Commands\Models\QueueHeartbeat;
 use Roost\LaravelTools\Laravel\Notifications\AdminNotifier;
@@ -50,8 +51,9 @@ class DeploymentCheckHeartbeatsCommand extends Command
 
     	$stalenessCutoffInMinutes = floatval($stalenessCutoffInMinutes);
 
+    	$queueHeartbeatClass = $this->getClassName(QueueHeartbeat::class);
         $heartbeat = QueueLog::query()
-			->where("job_name", "like", "%" . QueueHeartbeat::class . "%")
+			->where("job_name", "like", "%" . $queueHeartbeatClass . "%")
 			->orderBy("created_at", "desc")
 			->limit(1)
 			->get()
@@ -60,12 +62,15 @@ class DeploymentCheckHeartbeatsCommand extends Command
         $foundValidHeartbeat = false;
         $heartbeatAgeInMinutes = null;
         if($heartbeat !== null) {
-        	$heartbeatAgeInMinutes = $heartbeat->diffInMinutes();
-        	if($heartbeatAgeInMinutes > $stalenessCutoffInMinutes) {
-        		$this->warn("Last heartbeat is too stale: " . $heartbeatAgeInMinutes . " mins ago (cutoff is configured to " . $stalenessCutoffInMinutes . ")");
+        	/** @var Carbon $heartbeatStartedAt */
+        	$heartbeatStartedAt = $heartbeat->finish_time !== null ? $heartbeat->finish_time : $heartbeat->created_at;
+
+			$heartbeatAgeInMinutes = $heartbeatStartedAt->diffInMinutes();
+			if($heartbeatAgeInMinutes > $stalenessCutoffInMinutes) {
+				$this->warn("Last heartbeat is too stale: " . $heartbeatAgeInMinutes . " mins ago (cutoff is configured to " . $stalenessCutoffInMinutes . ")");
 			} else {
-        		$foundValidHeartbeat = true;
-        		$this->info("Found a valid heartbeat (" . $heartbeatAgeInMinutes . " mins old)");
+				$foundValidHeartbeat = true;
+				$this->info("Found a valid heartbeat (" . $heartbeatAgeInMinutes . " mins old)");
 			}
 		} else {
         	$this->warn("No heartbeat found in queue log");
@@ -87,4 +92,12 @@ class DeploymentCheckHeartbeatsCommand extends Command
         	$this->info("Sent an admin notification");
 		}
     }
+
+    function getClassName($class) {
+    	$parts = explode("\\", $class);
+
+    	end($parts);
+
+    	return current($parts);
+	}
 }
