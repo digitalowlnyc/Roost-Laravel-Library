@@ -28,5 +28,14 @@
             "type": "vcs",
             "url": "https://github.com/digitalowlnyc/roost-logging-php"
         }
-    ]
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Roost\\LaravelTools\\LaravelToolsServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    }
 }
