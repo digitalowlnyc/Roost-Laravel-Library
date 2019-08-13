@@ -85,7 +85,7 @@ class AdminNotifier
 			}
 
 			$sentTo[] = implode(", ", $emails);
-			$notification->route("email", $emails);
+			$notification->route("mail", $emails);
 		}
 
 		if(in_array("database", $configuredChannels)) {
