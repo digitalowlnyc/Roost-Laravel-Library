@@ -2,6 +2,7 @@
 
 namespace Roost\LaravelTools\Laravel\Notifications;
 
+use Illuminate\Support\Facades\App;
 use Roost\LaravelTools\Helpers\AppHelper;
 use Roost\LaravelTools\Helpers\EnvHelper;
 use Illuminate\Bus\Queueable;
@@ -19,6 +20,10 @@ class AdminAlert extends Notification
 
 	/** @var string */
 	private $level;
+	/**
+	 * @var string
+	 */
+	private $appEnvironment;
 
 	/**
      * Create a new notification instance.
@@ -30,6 +35,7 @@ class AdminAlert extends Notification
         $this->message = $message;
         $this->subject = $subject;
         $this->level = $level;
+        $this->appEnvironment = strtoupper(App::environment());
     }
 
     /**
@@ -58,7 +64,7 @@ class AdminAlert extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-					->subject("Alert: Admin [" . $this->level . "]")
+					->subject("Alert: Admin [" . $this->level . "][".$this->appEnvironment."]")
                     ->line($this->message);
     }
 
