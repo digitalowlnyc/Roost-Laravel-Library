@@ -3,10 +3,12 @@
 namespace Roost\LaravelTools\Helpers;
 
 use Illuminate\Support\Facades\App;
+use Roost\LaravelTools\Laravel\Databases\DatabaseHelper;
 
 class AppHelper
 {
 	private static $appLabel = null;
+	private static $appInstanceId = null;
 
 	public static function isDebuggingEnabled($strict = true) {
 		$enabled = config("app.debug", false);
@@ -51,5 +53,13 @@ class AppHelper
 		}
 
 		return $label;
+	}
+
+	public static function getAppInstanceId() {
+		if(static::$appInstanceId === null) {
+			static::$appInstanceId = "APP_ID_" . DatabaseHelper::getUniqueAlphaNumeric(10) . "_" . microtime();
+		}
+
+		return static::$appInstanceId;
 	}
 }
