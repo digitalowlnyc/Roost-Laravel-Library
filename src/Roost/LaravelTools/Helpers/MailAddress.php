@@ -38,7 +38,7 @@ class MailAddress
 			$val = [$val];
 		}
 		if(!$append) {
-			$this->to[] = [];
+			$this->to = [];
 		}
 
 		foreach($val as $address) {
@@ -53,7 +53,7 @@ class MailAddress
 			$val = [$val];
 		}
 		if(!$append) {
-			$this->cc[] = [];
+			$this->cc = [];
 		}
 
 		foreach($val as $address) {
@@ -68,7 +68,7 @@ class MailAddress
 			$val = [$val];
 		}
 		if(!$append) {
-			$this->bcc[] = [];
+			$this->bcc = [];
 		}
 
 		foreach($val as $address) {
