@@ -2,6 +2,8 @@
 
 namespace Roost\LaravelTools\Helpers;
 
+use Illuminate\Mail\Mailer;
+use Illuminate\Mail\PendingMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
@@ -14,11 +16,40 @@ class MailHelper
 	private static $STATICS_HAVE_INITIALIZED = false;
 
 	public static function send($to, $mailable, $queue = null) {
+		/** @var PendingMail $mail */
+		$mail = Mail::to($to);
+
+		static::sendMail($mail, $mailable, $queue);
+	}
+
+	public static function sendToAddresses(MailAddress $mailAddress, $mailable, $queue = null) {
+		/** @var Mailer $mail */
+		$mailer = Mail::getFacadeRoot();
+
+		/** @var PendingMail $mail */
+		$mail = (new PendingMail($mailer));
+
+		foreach($mailAddress->getAddresses() as $addressType => $emailAddresses) {
+			switch($addressType) {
+				case MailAddress::TO:
+					$mail->to($emailAddresses);
+					break;
+				case MailAddress::CC:
+					$mail->cc($emailAddresses);
+					break;
+				case MailAddress::BCC:
+					$mail->bcc($emailAddresses);
+					break;
+			}
+		}
+
+		static::sendMail($mail, $mailable, $queue);
+	}
+
+	public static function sendMail(PendingMail $mail, $mailable, $queue = null) {
 		if($queue === null) {
 			$queue = static::shouldQueue();
 		}
-
-		$mail = Mail::to($to);
 
 		if($queue) {
 			$mailResult = $mail->queue($mailable);
