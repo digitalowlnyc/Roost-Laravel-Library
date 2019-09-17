@@ -16,10 +16,14 @@ class MailHelper
 	private static $STATICS_HAVE_INITIALIZED = false;
 
 	public static function send($to, $mailable, $queue = null) {
-		/** @var PendingMail $mail */
-		$mail = Mail::to($to);
+		/** @var Mailer $mail */
+		$mailer = Mail::getFacadeRoot();
 
-		static::sendMail($mail, $mailable, $queue);
+		$mail = (new PendingMail($mailer));
+
+		$mailAddress = new MailAddress($to);
+
+		static::sendMail($mail, $mailAddress, $mailable, $queue);
 	}
 
 	public static function sendToAddresses(MailAddress $mailAddress, $mailable, $queue = null) {
@@ -28,6 +32,11 @@ class MailHelper
 
 		/** @var PendingMail $mail */
 		$mail = (new PendingMail($mailer));
+
+		static::sendMail($mail,$mailAddress, $mailable, $queue);
+	}
+
+	public static function sendMail(PendingMail $mail, MailAddress $mailAddress, $mailable, $queue = null) {
 
 		foreach($mailAddress->getAddresses() as $addressType => $emailAddresses) {
 			switch($addressType) {
@@ -43,10 +52,6 @@ class MailHelper
 			}
 		}
 
-		static::sendMail($mail, $mailable, $queue);
-	}
-
-	public static function sendMail(PendingMail $mail, $mailable, $queue = null) {
 		if($queue === null) {
 			$queue = static::shouldQueue();
 		}
@@ -61,9 +66,9 @@ class MailHelper
 			$queued = $mailResult !== null;
 
 			if($queued) {
-				Log::info("Queued email to: " . $to);
+				Log::info("Queued email to: " . print_r($mailAddress->getAddresses(), true));
 			} else {
-				Log::info("Sent email to: ". $to);
+				Log::info("Sent email to: " . print_r($mailAddress->getAddresses(), true));
 			}
 		}
 	}
