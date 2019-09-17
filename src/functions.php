@@ -16,6 +16,25 @@ if(!function_exists("exitWithError")) {
 	}
 }
 
+if(!function_exists("printLine")) {
+	function printLine($msg) {
+		echo $msg . PHP_EOL;
+	}
+}
+
+if(!function_exists("printReturn")) {
+	function printReturn($val) {
+		return print_r($val, true);
+	}
+}
+
+if(!function_exists("printOut")) {
+	function printOut($val) {
+		print_r($val);
+	}
+}
+
+
 if(!function_exists("exceptionDescription")) {
 	function exceptionDescription($exception) {
 		$exceptionClassName = "";
