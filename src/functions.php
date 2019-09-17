@@ -16,6 +16,22 @@ if(!function_exists("exitWithError")) {
 	}
 }
 
+if(!function_exists("exceptionDescription")) {
+	function exceptionDescription($exception) {
+		$exceptionClassName = "";
+		try {
+			$reflect = new ReflectionClass($exception);
+			$exceptionClassName = $reflect->getShortName();
+		} catch(Exception $e) {
+			// ignore
+		}
+		/** @var $exception Exception */
+		$description = $exception->getMessage() . "[" . $exceptionClassName . "@" . $exception->getFile() . ":" . $exception->getLine() . "]";
+
+		return $description;
+	}
+}
+
 if(!function_exists("logString")) {
 	function logString($val) {
 		if($val === null) {
@@ -145,15 +161,15 @@ if(!function_exists("functionCallHelper")) {
 		try {
 			return $callable();
 		} catch(\Exception $e) {
-			if($onErrorCallable !== null && $onErrorCallable($e)) {
-				$onErrorCallable($e);
+			if($onErrorCallable !== null) {
+				return $onErrorCallable($e);
 			} else {
 				echo __FUNCTION__ . ": Unhandled Exception encountered:" . PHP_EOL;
 				echo $e;
 			}
 		} catch(\Error $err) {
-			if($onErrorCallable !== null && $onErrorCallable($err)) {
-				$onErrorCallable($err);
+			if($onErrorCallable !== null) {
+				return $onErrorCallable($err);
 			} else {
 				echo __FUNCTION__ . ": Unhandled Error encountered:" . PHP_EOL;
 				echo $err;
@@ -161,6 +177,20 @@ if(!function_exists("functionCallHelper")) {
 		}
 
 		throw new RuntimeException("functionCallHelper: failed call to function");
+	}
+}
+
+if(!function_exists("functionCallTryer")) {
+	function functionCallTryer(callable $callable, callable $onErrorCallable = null) {
+		try {
+			return functionCallHelper($callable, $onErrorCallable);
+		} catch(Exception $e) {
+			// No fallback
+		} catch(Error $e) {
+			// No fallback
+		}
+
+		return null;
 	}
 }
 
