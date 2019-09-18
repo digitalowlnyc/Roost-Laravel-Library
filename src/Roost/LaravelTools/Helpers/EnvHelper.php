@@ -31,6 +31,10 @@ class EnvHelper
 
 		$value = static::get($key);
 
+		if(empty(trim($value))) {
+			return [];
+		}
+
 		return explode(",", $value);
 	}
 
