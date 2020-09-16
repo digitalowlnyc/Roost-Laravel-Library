@@ -66,9 +66,9 @@ class MailHelper
 			$queued = $mailResult !== null;
 
 			if($queued) {
-				Log::info("Queued email to: " . print_r($mailAddress->getAddresses(), true));
+				Log::info("Queued email to: " . json_encode($mailAddress->getAddresses(), true));
 			} else {
-				Log::info("Sent email to: " . print_r($mailAddress->getAddresses(), true));
+				Log::info("Sent email to: " . json_encode($mailAddress->getAddresses(), true));
 			}
 		}
 	}
