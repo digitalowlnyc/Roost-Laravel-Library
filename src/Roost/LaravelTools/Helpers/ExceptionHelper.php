@@ -99,6 +99,11 @@ class ExceptionHelper
 
 		$msg .= ": ";
 
+		if($ex instanceof \PDOException) {
+			$msg .= ", (errorInfo=" . json_encode($ex->errorInfo) . ")";
+        }
+
+
 		echo $msg;
 		echo $ex;
 	}
