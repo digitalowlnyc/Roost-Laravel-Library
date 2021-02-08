@@ -28,4 +28,17 @@ class LogHelper
 
 		return Log::channel($stack);
 	}
+
+	/**
+	 * Wrap log calls in a block to keep code clean when accessing
+	 * other data/objects that are just for logging purposes.
+	 *
+	 * @param $callback
+	 */
+	public static function output(callable $callback) {
+		ob_start();
+		$callback();
+		$output = ob_get_clean();
+		echo $output;
+	}
 }
