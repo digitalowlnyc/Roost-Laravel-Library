@@ -5,7 +5,7 @@
  * License: (All rights reserved)
  */
 
-namespace Roost\LaravelTools\Helpers;
+namespace Roost\LaravelTools\Laravel\Databases;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Query\Builder;
