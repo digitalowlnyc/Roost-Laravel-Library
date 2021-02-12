@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "roost/php-logging": "dev-master",
+        "roost/php-logging": "v1.0",
         "ext-json": "*"
     },
     "require-dev": {
@@ -24,10 +24,6 @@
         ]
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/digitalowlnyc/roost-logging-php"
-        }
     ],
     "extra": {
         "laravel": {
