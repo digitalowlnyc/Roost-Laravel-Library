@@ -7,7 +7,7 @@
 
 namespace Roost\LaravelTools\Html;
 
-class Tables {
+class TablesHelper {
     /**
      * Prints a table (array of maps)
      * @param $table
