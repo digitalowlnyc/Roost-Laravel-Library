@@ -12,13 +12,24 @@ namespace Roost\LaravelTools\Commands\Traits;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 
-trait CommandSendsEmailTrait
+class CommandEmailSender
 {
-	protected function sendTextEmail($subject, $body, $to, $cc = [], $bcc = []) {
+	protected $subjectPrefix = null;
+	protected $subjectSuffix = null;
+
+	public function setEmailSubjectPrefix($prefix) {
+		$this->subjectPrefix = $prefix;
+	}
+
+	public function setEmailSubjectSuffix($suffix) {
+		$this->subjectSuffix = $suffix;
+	}
+
+	public function sendTextEmail($subject, $body, $to, $cc = [], $bcc = []) {
 		$this->sendEmail($subject, $body, "TEXT", $to, $cc, $bcc);
 	}
 
-	protected function sendHtmlEmail($subject, $body, $to, $cc = [], $bcc = []) {
+	public function sendHtmlEmail($subject, $body, $to, $cc = [], $bcc = []) {
 		$this->sendEmail($subject, $body, "HTML", $to, $cc, $bcc);
 	}
 
@@ -28,6 +39,14 @@ trait CommandSendsEmailTrait
 		}
 		if(!is_string($body)) {
 			throw new \InvalidArgumentException("body must be a string");
+		}
+
+		if($this->subjectPrefix !== null) {
+			$subject = $this->subjectPrefix . " " . $subject;
+		}
+
+		if($this->subjectSuffix !== null) {
+			$subject = $subject . " " . $this->subjectSuffix;
 		}
 
 		Mail::send([], [], function (Message $message) use ($subject, $to, $cc, $bcc, $body, $type) {

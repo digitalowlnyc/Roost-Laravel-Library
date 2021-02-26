@@ -9,6 +9,23 @@ use Illuminate\Console\Command as IlluminateCommand;
 abstract class AppBaseCommand extends IlluminateCommand {
 	use AppCommandTrait;
 
+	/**
+	 * @var array
+	 */
+	private $commandPreHandlers = [];
+
+	/**
+	 * @var array
+	 */
+	private $commandPostHandlers = [];
+
+	abstract function handleCommand();
+
+	public function exitWithFailure($msg, $exitCode = 1) {
+		echo $msg . PHP_EOL;
+		exit($exitCode);
+	}
+
 	public function proceedPrompt($prompt = "") {
 		if(AppHelper::isDevelopmentOrDebuggingEnabled()) {
 			$fullPrompt = "Proceed?";
@@ -47,5 +64,34 @@ abstract class AppBaseCommand extends IlluminateCommand {
 			$this->info("Exiting");
 			exit;
 		}
+	}
+
+	public function registerCommandPreHandler(callable $callable) {
+		$this->commandPreHandlers[] = $callable;
+	}
+
+	public function handle() {
+		$this->markCommandRunning();
+
+		foreach($this->commandPreHandlers as $commandPreHandler) {
+			$commandPreHandler($this);
+		}
+		$this->info("Command processing started at: " . date("r"));
+
+		$commandResult = $this->handleCommand();
+
+		foreach($this->commandPostHandlers as $commandPostHandler) {
+			$commandPostHandler($this);
+		}
+
+		$this->info("Command processing finished at: " . date("r"));
+
+		return $commandResult;
+	}
+
+	private function markCommandRunning() {
+		$commandMarkerFile = str_replace("\\", "", __CLASS__);
+
+		file_put_contents("/tmp/_running_marker_" . $commandMarkerFile . ".marker", date("r"));
 	}
 }

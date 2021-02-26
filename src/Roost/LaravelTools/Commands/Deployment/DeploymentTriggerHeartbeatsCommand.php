@@ -3,9 +3,10 @@
 namespace Roost\LaravelTools\Commands\Deployment;
 
 use Illuminate\Console\Command;
+use Roost\LaravelTools\Commands\AppBaseCommand;
 use Roost\LaravelTools\Commands\Models\QueueHeartbeat;
 
-class DeploymentTriggerHeartbeatsCommand extends Command
+class DeploymentTriggerHeartbeatsCommand extends AppBaseCommand
 {
     /**
      * The name and signature of the console command.
@@ -36,9 +37,9 @@ class DeploymentTriggerHeartbeatsCommand extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handleCommand()
     {
-    	$this->info("Dispatching heartbeat");
+    	$this->info("Dispatching heartbeat at " . date("r"));
         QueueHeartbeat::dispatch();
         $this->info("Done");
     }

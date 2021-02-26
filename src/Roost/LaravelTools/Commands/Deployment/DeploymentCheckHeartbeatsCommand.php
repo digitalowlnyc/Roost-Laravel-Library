@@ -4,12 +4,13 @@ namespace Roost\LaravelTools\Commands\Deployment;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Roost\LaravelTools\Commands\AppBaseCommand;
 use Roost\LaravelTools\Commands\Models\QueueHeartbeat;
 use Roost\LaravelTools\Laravel\Notifications\AdminNotifier;
 use Roost\LaravelTools\Laravel\Notifications\Notification;
 use Roost\LaravelTools\Laravel\Queue\QueueLog;
 
-class DeploymentCheckHeartbeatsCommand extends Command
+class DeploymentCheckHeartbeatsCommand extends AppBaseCommand
 {
     /**
      * The name and signature of the console command.
@@ -40,7 +41,7 @@ class DeploymentCheckHeartbeatsCommand extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handleCommand()
     {
     	$stalenessCutoffInMinutes = $this->option("staleness");
     	$notifyIfSuccessful = $this->option("notification-even-on-success") ? true : false;
