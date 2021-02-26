@@ -17,6 +17,9 @@ class CommandEmailSender
 	protected $subjectPrefix = null;
 	protected $subjectSuffix = null;
 
+	public function __construct() {
+	}
+
 	public function setEmailSubjectPrefix($prefix) {
 		$this->subjectPrefix = $prefix;
 	}
