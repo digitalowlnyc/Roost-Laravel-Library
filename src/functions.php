@@ -185,6 +185,7 @@ if(!function_exists("functionCallHelper")) {
 			} else {
 				echo __FUNCTION__ . ": Unhandled Exception encountered:" . PHP_EOL;
 				echo $e;
+				echo PHP_EOL;
 			}
 		} catch(\Error $err) {
 			if($onErrorCallable !== null) {
@@ -192,6 +193,7 @@ if(!function_exists("functionCallHelper")) {
 			} else {
 				echo __FUNCTION__ . ": Unhandled Error encountered:" . PHP_EOL;
 				echo $err;
+				echo PHP_EOL;
 			}
 		}
 
